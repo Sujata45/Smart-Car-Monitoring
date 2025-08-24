@@ -12,6 +12,10 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
+    @Column(name = "car_number", nullable = false, unique = true)
+    @NotBlank(message = "Car number is required")
+    private String carNumber;
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "driver_id")
     private Driver driver;
@@ -59,8 +63,9 @@ public class Car {
         this.status = "IDLE";
     }
     
-    public Car(String status, Integer speed, Integer fuelLevel, Integer temperature, String location) {
+    public Car(String carNumber,String status, Integer speed, Integer fuelLevel, Integer temperature, String location) {
         this();
+        this.carNumber = carNumber;
         this.status = status;
         this.speed = speed;
         this.fuelLevel = fuelLevel;
@@ -76,8 +81,15 @@ public class Car {
     public void setId(Long id) {
         this.id = id;
     }
-    
-    public Driver getDriver() {
+    public String getCarNumber() {
+		return carNumber;
+	}
+
+	public void setCarNumber(String carNumber) {
+		this.carNumber = carNumber;
+	}
+
+	public Driver getDriver() {
         return driver;
     }
     
@@ -159,6 +171,7 @@ public class Car {
     public String toString() {
         return "Car{" +
                 "id=" + id +
+                ", carNumber='" + carNumber + '\'' +
                 ", driverId=" + (driver != null ? driver.getId() : null) +
                 ", status='" + status + '\'' +
                 ", speed=" + speed +
@@ -168,4 +181,5 @@ public class Car {
                 ", isActive=" + isActive +
                 '}';
     }
+
 }
